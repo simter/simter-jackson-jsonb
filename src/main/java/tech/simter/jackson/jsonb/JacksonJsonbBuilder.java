@@ -1,5 +1,6 @@
 package tech.simter.jackson.jsonb;
 
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.json.bind.Jsonb;
@@ -34,6 +35,20 @@ class JacksonJsonbBuilder implements JsonbBuilder {
     if (cacheMapper == null) {
       // create a new ObjectMapper instance
       cacheMapper = new ObjectMapper();
+
+      try {
+        // register jackson JavaTimeModule before findAndRegisterModules
+        // because jackson-2.x auto-registration will only register older JSR310Module
+        cacheMapper.registerModule((Module)
+          Class.forName("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule")
+            .getDeclaredConstructor().newInstance()
+        );
+      } catch (Exception ignored) {
+      }
+
+      // auto register jackson modules by dependencies
+      // see https://github.com/FasterXML/jackson-modules-java8
+      cacheMapper.findAndRegisterModules();
     }
 
     return cacheMapper;
