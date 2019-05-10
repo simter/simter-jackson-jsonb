@@ -1,5 +1,6 @@
 package tech.simter.jackson.jsonb;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,8 +15,18 @@ import javax.json.spi.JsonProvider;
  * @author RJ
  */
 class JacksonJsonbBuilder implements JsonbBuilder {
+  /**
+   * Property name for config jackson through {@link ObjectMapper#setDefaultPropertyInclusion(JsonInclude.Include)}.
+   * <p>
+   * All valid values are the enum name of {@link JsonInclude.Include}.
+   */
+  static final String DEFAULT_PROPERTY_INCLUSION = "jsonb.jackson.default-property-inclusion";
+
+  private JsonbConfig config;
+
   @Override
   public JsonbBuilder withConfig(JsonbConfig config) {
+    this.config = config;
     return this;
   }
 
@@ -35,6 +46,14 @@ class JacksonJsonbBuilder implements JsonbBuilder {
     if (cacheMapper == null) {
       // create a new ObjectMapper instance
       cacheMapper = new ObjectMapper();
+
+      // config jackson ObjectMapper by JsonbConfig
+      if (config != null) {
+        // set default property inclusion
+        config.getProperty(DEFAULT_PROPERTY_INCLUSION).ifPresent(value ->
+          cacheMapper.setDefaultPropertyInclusion(JsonInclude.Include.valueOf(value.toString()))
+        );
+      }
 
       try {
         // register jackson JavaTimeModule before findAndRegisterModules
