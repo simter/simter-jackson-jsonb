@@ -1,3 +1,3 @@
-# simter-jsonb-provider-jackson
+# simter-jackson-jsonb
 
-Simter JsonbProvider by Jackson
+Jackson JSON-B (JSR-367) support by Simter.
