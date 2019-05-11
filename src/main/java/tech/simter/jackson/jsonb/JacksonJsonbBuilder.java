@@ -9,19 +9,14 @@ import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
 import javax.json.spi.JsonProvider;
 
+import static tech.simter.jackson.jsonb.JacksonJsonbUtils.DEFAULT_PROPERTY_INCLUSION;
+
 /**
  * The {@link JsonbBuilder} implementation by Jackson.
  *
  * @author RJ
  */
 class JacksonJsonbBuilder implements JsonbBuilder {
-  /**
-   * Property name for config jackson through {@link ObjectMapper#setDefaultPropertyInclusion(JsonInclude.Include)}.
-   * <p>
-   * All valid values are the enum name of {@link JsonInclude.Include}.
-   */
-  static final String DEFAULT_PROPERTY_INCLUSION = "jsonb.jackson.default-property-inclusion";
-
   private JsonbConfig config;
 
   @Override
@@ -42,18 +37,13 @@ class JacksonJsonbBuilder implements JsonbBuilder {
 
   private ObjectMapper cacheMapper;
 
-  private ObjectMapper getMapper() {
+  ObjectMapper getMapper() {
+    // get from di context bean
+    cacheMapper = JacksonJsonbUtils.getObjectMapper();
+
     if (cacheMapper == null) {
       // create a new ObjectMapper instance
       cacheMapper = new ObjectMapper();
-
-      // config jackson ObjectMapper by JsonbConfig
-      if (config != null) {
-        // set default property inclusion
-        config.getProperty(DEFAULT_PROPERTY_INCLUSION).ifPresent(value ->
-          cacheMapper.setDefaultPropertyInclusion(JsonInclude.Include.valueOf(value.toString()))
-        );
-      }
 
       try {
         // register jackson JavaTimeModule before findAndRegisterModules
@@ -68,6 +58,14 @@ class JacksonJsonbBuilder implements JsonbBuilder {
       // auto register jackson modules by dependencies
       // see https://github.com/FasterXML/jackson-modules-java8
       cacheMapper.findAndRegisterModules();
+    }
+
+    // config jackson ObjectMapper by JsonbConfig
+    if (config != null) {
+      // set default property inclusion
+      config.getProperty(DEFAULT_PROPERTY_INCLUSION).ifPresent(value ->
+        cacheMapper.setDefaultPropertyInclusion(JsonInclude.Include.valueOf(value.toString()))
+      );
     }
 
     return cacheMapper;

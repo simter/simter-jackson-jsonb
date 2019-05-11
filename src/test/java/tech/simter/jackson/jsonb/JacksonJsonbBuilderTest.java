@@ -1,6 +1,7 @@
 package tech.simter.jackson.jsonb;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static tech.simter.jackson.jsonb.JacksonJsonbBuilder.DEFAULT_PROPERTY_INCLUSION;
+import static tech.simter.jackson.jsonb.JacksonJsonbUtils.DEFAULT_PROPERTY_INCLUSION;
 
 /**
  * Test {@link JacksonJsonbBuilder}.
@@ -26,6 +27,11 @@ import static tech.simter.jackson.jsonb.JacksonJsonbBuilder.DEFAULT_PROPERTY_INC
 class JacksonJsonbBuilderTest {
   @Mock
   private JsonProvider jsonProvider;
+
+  @BeforeEach
+  void setUp() {
+    JacksonJsonbUtils.setObjectMapper(null);
+  }
 
   @Test
   @DisplayName("with empty JsonbConfig")
