@@ -40,7 +40,7 @@ class JacksonJsonbBuilderTest {
     assertSame(builder, builder.withConfig(new JsonbConfig()));
 
     String actual = builder.build().toJson(new Example());
-    assertEquals("{\"anInt\":0,\"str\":null,\"list\":[]}", actual);
+    assertEquals("{\"anInt\":0}", actual);
   }
 
   @Test
@@ -50,7 +50,7 @@ class JacksonJsonbBuilderTest {
     assertSame(builder, builder.withConfig(null));
 
     String actual = builder.build().toJson(new Example());
-    assertEquals("{\"anInt\":0,\"str\":null,\"list\":[]}", actual);
+    assertEquals("{\"anInt\":0}", actual);
   }
 
   @Test
