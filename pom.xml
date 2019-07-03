@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <artifactId>simter-jackson-jsonb</artifactId>
-  <version>${revision}</version>
+  <version>0.5.0</version>
   <packaging>jar</packaging>
   <name>simter-jackson-jsonb</name>
   <description>Jackson JSON-B (JSR-367) support by Simter</description>
