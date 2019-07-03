@@ -1,12 +1,12 @@
 package tech.simter.jackson.jsonb;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.mockk.impl.annotations.MockK;
+import io.mockk.junit5.MockKExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbConfig;
@@ -23,9 +23,9 @@ import static tech.simter.jackson.jsonb.JacksonJsonbUtils.DEFAULT_PROPERTY_INCLU
  *
  * @author RJ
  */
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockKExtension.class)
 class JacksonJsonbBuilderTest {
-  @Mock
+  @MockK
   private JsonProvider jsonProvider;
 
   @BeforeEach
