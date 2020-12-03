@@ -13,6 +13,10 @@
   <name>simter-jackson-jsonb</name>
   <description>Jackson JSON-B (JSR-367) support by Simter</description>
   <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
     <!-- json -->
     <dependency>
       <groupId>javax.json</groupId>

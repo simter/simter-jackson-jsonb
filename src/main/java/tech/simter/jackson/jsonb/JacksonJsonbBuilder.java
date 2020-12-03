@@ -5,11 +5,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
 import javax.json.spi.JsonProvider;
+import java.util.stream.Collectors;
 
 import static tech.simter.jackson.jsonb.JacksonJsonbUtils.DEFAULT_PROPERTY_INCLUSION;
 
@@ -19,6 +22,7 @@ import static tech.simter.jackson.jsonb.JacksonJsonbUtils.DEFAULT_PROPERTY_INCLU
  * @author RJ
  */
 class JacksonJsonbBuilder implements JsonbBuilder {
+  private static final Logger logger = LoggerFactory.getLogger(JacksonJsonbBuilder.class);
   private JsonbConfig config;
 
   @Override
@@ -46,13 +50,24 @@ class JacksonJsonbBuilder implements JsonbBuilder {
     if (cacheMapper == null) {
       // create a new ObjectMapper instance
       cacheMapper = new ObjectMapper();
+      logger.info("create a new ObjectMapper instance {} and init global default config", cacheMapper.hashCode());
 
       // global default config
       initGlobalDefaultConfig(cacheMapper);
+    } else {
+      logger.info("get a cache ObjectMapper instance {}", cacheMapper.hashCode());
     }
 
     // config jackson ObjectMapper by JsonbConfig
     initByJsonbConfig(cacheMapper);
+
+    if (logger.isInfoEnabled()) {
+      logger.info("jackson registered module ids:\r\n  {}",
+        cacheMapper.getRegisteredModuleIds().stream()
+          .map(Object::toString)
+          .collect(Collectors.joining("\r\n  "))
+      );
+    }
 
     return cacheMapper;
   }
