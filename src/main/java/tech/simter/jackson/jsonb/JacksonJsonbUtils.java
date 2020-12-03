@@ -21,11 +21,11 @@ public final class JacksonJsonbUtils {
 
   private static ObjectMapper objectMapper;
 
-  static void setObjectMapper(ObjectMapper objectMapper) {
+  public static void setObjectMapper(ObjectMapper objectMapper) {
     JacksonJsonbUtils.objectMapper = objectMapper;
   }
 
-  static ObjectMapper getObjectMapper() {
+  public static ObjectMapper getObjectMapper() {
     return objectMapper;
   }
 }
