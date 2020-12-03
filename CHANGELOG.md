@@ -1,5 +1,14 @@
 # simter-jackson-jsonb changelog
 
+## 0.6.0 - 2020-12-03
+
+- Upgrade to simter-dependencies-2.0.0
+- Make JacksonJsonbUtils.objectMapper public
+- Add some logging config
+- Auto register JavaTimeModule by java service
+    > `mapper.findAndRegisterModules()` will do all the things
+- Add unit test for simter and jackson JavaTimeModule
+
 ## 0.5.0 - 2019-07-03
 
 No code changed, just polishing maven config and unit test.
