@@ -2,7 +2,6 @@ package tech.simter.jackson.jsonb;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
@@ -94,23 +93,6 @@ class JacksonJsonbBuilder implements JsonbBuilder {
 
     // enabled some features
     mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-
-    try {
-      // register jackson JavaTimeModule before findAndRegisterModules
-      // because jackson-2.x auto-registration will only register older JSR310Module
-      Class<?> clazz;
-      try {
-        clazz = Class.forName("tech.simter.jackson.ext.javatime.JavaTimeModule");
-      } catch (ClassNotFoundException e) {
-        try {
-          clazz = Class.forName("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
-        } catch (ClassNotFoundException ex) {
-          clazz = null;
-        }
-      }
-      if (clazz != null) mapper.registerModule((Module) clazz.getDeclaredConstructor().newInstance());
-    } catch (Exception ignored) {
-    }
 
     // auto register jackson modules by dependencies
     // see https://github.com/FasterXML/jackson-modules-java8
